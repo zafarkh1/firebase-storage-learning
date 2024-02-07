@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: auto;
+  width: 100vw;
+}
+
+button {
+  cursor: pointer;
+}
