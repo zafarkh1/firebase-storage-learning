@@ -23,14 +23,21 @@ const Firestore = () => {
   const imgListRef = ref(storage, "images/");
 
   useEffect(() => {
-    listAll(imgListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          setImgList((prev) => [...prev, url]);
-        });
-      });
-    });
-  });
+    const fetchImgUrl = async () => {
+      try {
+        const response = await listAll(imgListRef);
+        const urls = await Promise.all(
+          response.items.map(async (item) => {
+            return await getDownloadURL(item);
+          })
+        );
+        setImgList(urls);
+      } catch (error) {
+        console.error("Error fetching image URLs:", error);
+      }
+    };
+    fetchImgUrl();
+  }, [imgListRef]);
 
   return (
     <div className="container">
